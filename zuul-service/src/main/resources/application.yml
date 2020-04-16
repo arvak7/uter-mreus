@@ -3,10 +3,10 @@ zuul:
   prefix: /api
   routes:
     hello-server:
-      path: /server/**
+      path: /backoffice/**
       url: http://localhost:8071
     hello-client:
-      path: /client/**
+      path: /frontend/**
       serviceId: HELLO-CLIENT
 
 eureka:
