@@ -1,7 +1,7 @@
 package com.uter.backoffice.controller;
 
-import com.uter.backoffice.model.Driver;
 import com.uter.backoffice.repository.DriverRepository;
+import com.uter.commons.model.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +32,15 @@ public class DriverController {
     }
 
     @PutMapping("/{id}")
-    public Driver updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver DriverDetail) {
-        Driver Driver = driverRepository.findById(id).orElse(null);
-        Driver.setName(DriverDetail.getName());
-        Driver.setSurname(DriverDetail.getSurname());
-        Driver.setLicense(DriverDetail.getLicense());
-        return driverRepository.save(Driver);
+    public ResponseEntity<Driver> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver DriverDetail) {
+        Driver driver = driverRepository.findById(id).orElse(null);
+        if (driver != null) {
+            driver.setName(DriverDetail.getName());
+            driver.setSurname(DriverDetail.getSurname());
+            driver.setLicense(DriverDetail.getLicense());
+            ResponseEntity.ok().body(driverRepository.save(driver));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

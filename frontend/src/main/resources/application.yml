@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hello-client
+    name: frontend
 
 server:
   port: 8072

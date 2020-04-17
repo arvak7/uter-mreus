@@ -1,7 +1,7 @@
 package com.uter.backoffice.controller;
 
-import com.uter.backoffice.model.Vehicle;
 import com.uter.backoffice.repository.VehicleRepository;
+import com.uter.commons.model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

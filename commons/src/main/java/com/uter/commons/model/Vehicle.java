@@ -1,18 +1,23 @@
-package com.uter.backoffice.model;
+package com.uter.commons.model;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "vehicles")
-public class Vehicle {
+@Table(name = "vehicles", schema = "uster")
+public class Vehicle implements Serializable {
     @Id
+    @Column(name = "vehicle_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long vehicleId;
     @NotBlank
     private String brand;
     @NotBlank
@@ -25,5 +30,7 @@ public class Vehicle {
     @Column(name = "licenserequired")
     private String licenseRequired;
 
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<TripEntity> trips;
 
 }

@@ -5,9 +5,9 @@ zuul:
     hello-server:
       path: /backoffice/**
       url: http://localhost:8071
-    hello-client:
+    frontend:
       path: /frontend/**
-      serviceId: HELLO-CLIENT
+      url: http://localhost:8072
 
 eureka:
   client:
