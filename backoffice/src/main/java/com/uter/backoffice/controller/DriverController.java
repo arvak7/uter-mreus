@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/v1/drivers")
 public class DriverController {
@@ -34,13 +35,16 @@ public class DriverController {
     @PutMapping("/{id}")
     public ResponseEntity<Driver> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver DriverDetail) {
         Driver driver = driverRepository.findById(id).orElse(null);
+        ResponseEntity<Driver> responseEntity;
         if (driver != null) {
             driver.setName(DriverDetail.getName());
             driver.setSurname(DriverDetail.getSurname());
             driver.setLicense(DriverDetail.getLicense());
-            ResponseEntity.ok().body(driverRepository.save(driver));
+            responseEntity = ResponseEntity.ok().body(driverRepository.save(driver));
+        } else {
+            responseEntity = ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();
+        return responseEntity;
     }
 
     @DeleteMapping("/{id}")
