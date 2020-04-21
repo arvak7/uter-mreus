@@ -1,7 +1,6 @@
 package com.uter.frontend.controller;
 
 import com.uter.commons.model.Trip;
-import com.uter.commons.model.Vehicle;
 import com.uter.frontend.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

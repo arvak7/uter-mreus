@@ -38,13 +38,19 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}")
-    public Vehicle updateVehicle(@PathVariable(value = "id") Long id, @Valid @RequestBody Vehicle vehicleDetail) {
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable(value = "id") Long id, @Valid @RequestBody Vehicle vehicleDetail) {
         Vehicle vehicle = vehicleRepository.findById(id).orElse(null);
-        vehicle.setBrand(vehicleDetail.getBrand());
-        vehicle.setModel(vehicleDetail.getModel());
-        vehicle.setPlate(vehicleDetail.getPlate());
-        vehicle.setLicenseRequired(vehicleDetail.getLicenseRequired());
-        return vehicleRepository.save(vehicle);
+        ResponseEntity responseEntity = null;
+        if (vehicle != null) {
+            vehicle.setBrand(vehicleDetail.getBrand());
+            vehicle.setModel(vehicleDetail.getModel());
+            vehicle.setPlate(vehicleDetail.getPlate());
+            vehicle.setLicenseRequired(vehicleDetail.getLicenseRequired());
+            ResponseEntity.ok().body(vehicleRepository.save(vehicle));
+        } else {
+            responseEntity = ResponseEntity.noContent().build();
+        }
+        return responseEntity;
     }
 
     @DeleteMapping("/{id}")
