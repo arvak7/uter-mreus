@@ -6,9 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -29,8 +26,5 @@ public class Vehicle implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "licenserequired")
     private String licenseRequired;
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<TripEntity> trips;
 
 }

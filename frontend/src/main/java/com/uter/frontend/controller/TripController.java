@@ -33,16 +33,22 @@ public class TripController {
     }
 
     @PutMapping("/{id}")
-    public Trip updateVehicle(@PathVariable(value = "id") Long id, @Valid @RequestBody Trip tripDetail) {
+    public ResponseEntity<Trip> updateVehicle(@PathVariable(value = "id") Long id, @Valid @RequestBody Trip tripDetail) {
         Trip trip = tripRepository.findById(id).orElse(null);
-        trip.setDate(tripDetail.getDate());
-        trip.setDriver(tripDetail.getDriver());
-        trip.setVehicle(tripDetail.getVehicle());
-        return tripRepository.save(trip);
+        ResponseEntity<Trip> responseEntity;
+        if (trip != null) {
+            trip.setDate(tripDetail.getDate());
+            trip.setDriver(tripDetail.getDriver());
+            trip.setVehicle(tripDetail.getVehicle());
+            responseEntity = ResponseEntity.ok().body(tripRepository.save(trip));
+        } else {
+            responseEntity = ResponseEntity.noContent().build();
+        }
+        return responseEntity;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable(value = "id") Long id) {
+    public ResponseEntity deleteVehicle(@PathVariable(value = "id") Long id) {
         tripRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

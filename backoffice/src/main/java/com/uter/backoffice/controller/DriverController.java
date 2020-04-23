@@ -28,18 +28,18 @@ public class DriverController {
     }
 
     @PostMapping
-    public Driver createDriver(@Valid @RequestBody Driver Driver) {
-        return driverRepository.save(Driver);
+    public Driver createDriver(@Valid @RequestBody Driver driver) {
+        return driverRepository.save(driver);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Driver> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver DriverDetail) {
+    public ResponseEntity<Driver> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver driverDetail) {
         Driver driver = driverRepository.findById(id).orElse(null);
         ResponseEntity<Driver> responseEntity;
         if (driver != null) {
-            driver.setName(DriverDetail.getName());
-            driver.setSurname(DriverDetail.getSurname());
-            driver.setLicense(DriverDetail.getLicense());
+            driver.setName(driverDetail.getName());
+            driver.setSurname(driverDetail.getSurname());
+            driver.setLicense(driverDetail.getLicense());
             responseEntity = ResponseEntity.ok().body(driverRepository.save(driver));
         } else {
             responseEntity = ResponseEntity.noContent().build();
@@ -48,7 +48,7 @@ public class DriverController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDriver(@PathVariable(value = "id") Long id) {
+    public ResponseEntity deleteDriver(@PathVariable(value = "id") Long id) {
         driverRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
