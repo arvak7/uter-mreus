@@ -23,7 +23,7 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
-    public Trip getVehicleById(@PathVariable(value = "id") Long id) {
+    public Trip getTripById(@PathVariable(value = "id") Long id) {
         return tripRepository.findById(id).orElse(null);
     }
 
