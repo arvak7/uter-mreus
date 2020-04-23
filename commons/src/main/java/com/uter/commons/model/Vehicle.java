@@ -17,7 +17,7 @@ public class Vehicle implements Serializable {
     @Id
     @Column(name = "vehicle_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vehicleId;
+    private Long id;
     @NotBlank
     private String brand;
     @NotBlank
