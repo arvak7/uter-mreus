@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@EntityScan(basePackages = {"com.uter.commons.model"})
+@EntityScan(basePackages = {"com.uter.commons"})
 public class BackofficeApplication {
 
     public static void main(String[] args) {

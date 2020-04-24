@@ -1,6 +1,8 @@
 package com.uter.frontend.controller;
 
-import com.uter.commons.model.Trip;
+import com.uter.commons.dto.TripDTO;
+import com.uter.commons.entities.Trip;
+import com.uter.frontend.parser.ParseTrip;
 import com.uter.frontend.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -17,30 +20,33 @@ public class TripController {
     @Autowired
     private TripRepository tripRepository;
 
+    @Autowired
+    private ParseTrip parser;
+
     @GetMapping
-    public List<Trip> getAllTrips() {
-        return tripRepository.findAll();
+    public List<TripDTO> getAllTrips() {
+        return tripRepository.findAll().stream().map(trip -> parser.parse(trip)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Trip getTripById(@PathVariable(value = "id") Long id) {
-        return tripRepository.findById(id).orElse(null);
+    public TripDTO getTripById(@PathVariable(value = "id") Long id) {
+        return parser.parse(tripRepository.findById(id).orElse(null));
     }
 
     @PostMapping
-    public Trip createTrip(@Valid @RequestBody Trip tripEntity) {
-        return tripRepository.save(tripEntity);
+    public TripDTO createTrip(@Valid @RequestBody TripDTO tripEntity) {
+        return parser.parse(tripRepository.save(parser.unparse(tripEntity)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Trip> updateVehicle(@PathVariable(value = "id") Long id, @Valid @RequestBody Trip tripDetail) {
+    public ResponseEntity<TripDTO> updateTrip(@PathVariable(value = "id") Long id, @Valid @RequestBody TripDTO tripDetail) {
         Trip trip = tripRepository.findById(id).orElse(null);
-        ResponseEntity<Trip> responseEntity;
+        ResponseEntity<TripDTO> responseEntity;
         if (trip != null) {
             trip.setDate(tripDetail.getDate());
-            trip.setDriver(tripDetail.getDriver());
-            trip.setVehicle(tripDetail.getVehicle());
-            responseEntity = ResponseEntity.ok().body(tripRepository.save(trip));
+            trip.setDrivers(tripDetail.getDrivers().stream().map(driver -> parser.unparse(driver)).collect(Collectors.toList()));
+            trip.setVehicles(tripDetail.getVehicles().stream().map(vehicle -> parser.unparse(vehicle)).collect(Collectors.toList()));
+            responseEntity = ResponseEntity.ok().body(parser.parse(tripRepository.save(trip)));
         } else {
             responseEntity = ResponseEntity.noContent().build();
         }
@@ -48,7 +54,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteVehicle(@PathVariable(value = "id") Long id) {
+    public ResponseEntity deleteTrip(@PathVariable(value = "id") Long id) {
         tripRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

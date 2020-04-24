@@ -1,12 +1,16 @@
-package com.uter.commons.model;
+package com.uter.commons.entities;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "drivers", schema = "uster")
 public class Driver  implements Serializable {
@@ -20,4 +24,7 @@ public class Driver  implements Serializable {
     private String surname;
     @NotBlank
     private String license;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "drivers")
+    private List<Trip> trips;
 }

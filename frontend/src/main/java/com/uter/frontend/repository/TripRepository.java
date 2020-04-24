@@ -1,6 +1,6 @@
 package com.uter.frontend.repository;
 
-import com.uter.commons.model.Trip;
+import com.uter.commons.entities.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

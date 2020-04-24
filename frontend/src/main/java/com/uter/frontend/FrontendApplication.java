@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableCircuitBreaker
 @EnableDiscoveryClient
-@EntityScan(basePackages = {"com.uter.commons.model"})
+@EntityScan(basePackages = {"com.uter.commons.entities"})
 @SpringBootApplication
 public class FrontendApplication {
 

@@ -1,6 +1,6 @@
 package com.uter.backoffice.repository;
 
-import com.uter.commons.model.Vehicle;
+import com.uter.commons.entities.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,13 +1,17 @@
-package com.uter.commons.model;
+package com.uter.commons.entities;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "vehicles", schema = "uster")
 public class Vehicle implements Serializable {
@@ -26,5 +30,10 @@ public class Vehicle implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "licenserequired")
     private String licenseRequired;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "vehicles")
+    private List<Trip> trips;
+
+
 
 }

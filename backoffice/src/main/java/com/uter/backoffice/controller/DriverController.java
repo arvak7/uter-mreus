@@ -1,13 +1,16 @@
 package com.uter.backoffice.controller;
 
+import com.uter.backoffice.parser.ParseDriver;
 import com.uter.backoffice.repository.DriverRepository;
-import com.uter.commons.model.Driver;
+import com.uter.commons.dto.DriverDTO;
+import com.uter.commons.entities.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -16,31 +19,34 @@ public class DriverController {
 
     @Autowired
     private DriverRepository driverRepository;
+
+    @Autowired
+    private ParseDriver parser;
     
     @GetMapping
-    public List<Driver> getAllDrivers() {
-        return driverRepository.findAll();
+    public List<DriverDTO> getAllDrivers() {
+        return driverRepository.findAll().stream().map(driver -> parser.parse(driver)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Driver getDriverById(@PathVariable(value = "id") Long id) {
-        return driverRepository.findById(id).orElse(null);
+    public DriverDTO getDriverById(@PathVariable(value = "id") Long id) {
+        return parser.parse(driverRepository.findById(id).orElse(null));
     }
 
     @PostMapping
-    public Driver createDriver(@Valid @RequestBody Driver driver) {
-        return driverRepository.save(driver);
+    public DriverDTO createDriver(@Valid @RequestBody DriverDTO driver) {
+        return parser.parse(driverRepository.save(parser.unparse(driver)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Driver> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody Driver driverDetail) {
+    public ResponseEntity<DriverDTO> updateDriver(@PathVariable(value = "id") Long id, @Valid @RequestBody DriverDTO driverDetail) {
         Driver driver = driverRepository.findById(id).orElse(null);
-        ResponseEntity<Driver> responseEntity;
+        ResponseEntity<DriverDTO> responseEntity;
         if (driver != null) {
             driver.setName(driverDetail.getName());
             driver.setSurname(driverDetail.getSurname());
             driver.setLicense(driverDetail.getLicense());
-            responseEntity = ResponseEntity.ok().body(driverRepository.save(driver));
+            responseEntity = ResponseEntity.ok().body(parser.parse(driverRepository.save(driver)));
         } else {
             responseEntity = ResponseEntity.noContent().build();
         }
