@@ -8,3 +8,4 @@
 
 ## Status
 - `Milestone 1` we have a microservice project with eureka and zuul. We store data in a MySql DB named 'uster'. At this moment we can store only one driver and one vehicle for a trip.
+- `Milestone 2` The functionality of having multiple vehicles and drivers for a single trip has been added. Furthermore, at the code level, the responsibility has been separated by adding a service layer. 
