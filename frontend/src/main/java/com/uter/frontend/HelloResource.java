@@ -22,7 +22,7 @@ public class HelloResource {
             )
     @GetMapping
     public String hello() {
-        String url = "http://hello-server/rest/hello/server";
+        String url = "http://backoffice/rest/hello/server";
         return restTemplate.getForObject(url, String.class)+ " including client";
     }
 

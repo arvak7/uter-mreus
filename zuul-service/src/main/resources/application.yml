@@ -2,7 +2,7 @@ zuul:
   #Service will be mapped under the /api URI
   prefix: /api
   routes:
-    hello-server:
+    backoffice:
       path: /backoffice/**
       url: http://localhost:8071
     frontend:

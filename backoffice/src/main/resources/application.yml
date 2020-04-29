@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hello-server
+    name: backoffice
 
 server:
   port: 8071
