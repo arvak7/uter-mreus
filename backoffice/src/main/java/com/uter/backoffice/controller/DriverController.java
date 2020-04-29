@@ -5,10 +5,12 @@ import com.uter.backoffice.repository.DriverRepository;
 import com.uter.commons.dto.DriverDTO;
 import com.uter.commons.entities.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,10 @@ public class DriverController {
         return driverRepository.findAll().stream().map(driver -> parser.parse(driver)).collect(Collectors.toList());
     }
 
+    @GetMapping("/free")
+    public List<DriverDTO> getFreeDrivers(@RequestParam(value = "fecha") @DateTimeFormat(pattern="yyyyddMM") Date date, @RequestParam String license) {
+        return driverRepository.findFreeDriver(date, license).stream().map(driver -> parser.parse(driver)).collect(Collectors.toList());
+    }
     @GetMapping("/{id}")
     public DriverDTO getDriverById(@PathVariable(value = "id") Long id) {
         return parser.parse(driverRepository.findById(id).orElse(null));

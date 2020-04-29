@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @EnableCircuitBreaker
 @EnableDiscoveryClient
 @EntityScan(basePackages = {"com.uter.commons.entities"})
@@ -29,6 +32,11 @@ class Config {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 }

@@ -1,15 +1,18 @@
 package com.uter.backoffice.controller;
 
+import com.uter.backoffice.parser.ParseVehicle;
 import com.uter.backoffice.repository.VehicleRepository;
+import com.uter.backoffice.util.Utils;
 import com.uter.commons.dto.VehicleDTO;
 import com.uter.commons.entities.Vehicle;
-import com.uter.backoffice.parser.ParseVehicle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,9 @@ public class VehicleController {
 
     @Autowired
     private ParseVehicle parser;
+
+    @Autowired
+    private Utils utils;
 
     @GetMapping
     public List<VehicleDTO> getAllVehicles() {
@@ -39,6 +45,12 @@ public class VehicleController {
         List<VehicleDTO> vehiclesDTO = new ArrayList<>();
         vehicleRepository.findByBrand(model).stream().map(vehicle -> vehiclesDTO.add(parser.parse(vehicle))).collect(Collectors.toList());
         return vehiclesDTO;
+    }
+
+    @RequestMapping("/free/{fecha}")
+    public List<VehicleDTO> getFreeVehicles(@PathVariable(value = "fecha") @DateTimeFormat(pattern="yyyyddMM") Date date) {
+        List<Vehicle> freeVehicle = vehicleRepository.findFreeVehicle(utils.removeTime(date));
+        return freeVehicle.stream().map(vehicle -> parser.parse(vehicle)).collect(Collectors.toList());
     }
 
     @PostMapping
