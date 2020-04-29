@@ -1,8 +1,7 @@
-package com.uter.backoffice.parser;
+package com.uter.commons.parser;
 
 import com.uter.commons.dto.DriverDTO;
 import com.uter.commons.entities.Driver;
-import com.uter.commons.parser.Parser;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -8,6 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +17,8 @@ import java.util.TimeZone;
 @EnableCircuitBreaker
 @EnableDiscoveryClient
 @EntityScan(basePackages = {"com.uter.commons.entities"})
-@SpringBootApplication
+@EnableJpaRepositories
+@SpringBootApplication(scanBasePackages = {"com.uter.commons.*", "com.uter.frontend.*"})
 public class FrontendApplication {
 
     public static void main(String[] args) {
@@ -36,7 +38,7 @@ class Config {
 
     @PostConstruct
     void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
     }
 
 }

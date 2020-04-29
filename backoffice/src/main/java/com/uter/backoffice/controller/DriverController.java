@@ -1,6 +1,6 @@
 package com.uter.backoffice.controller;
 
-import com.uter.backoffice.parser.ParseDriver;
+import com.uter.commons.parser.ParseDriver;
 import com.uter.backoffice.repository.DriverRepository;
 import com.uter.commons.dto.DriverDTO;
 import com.uter.commons.entities.Driver;

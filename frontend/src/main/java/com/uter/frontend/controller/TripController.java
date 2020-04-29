@@ -2,7 +2,9 @@ package com.uter.frontend.controller;
 
 import com.uter.commons.dto.TripDTO;
 import com.uter.commons.entities.Trip;
-import com.uter.frontend.parser.ParseTrip;
+import com.uter.commons.parser.ParseDriver;
+import com.uter.commons.parser.ParseVehicle;
+import com.uter.commons.parser.ParseTrip;
 import com.uter.frontend.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,12 @@ public class TripController {
 
     @Autowired
     private ParseTrip parser;
+
+    @Autowired
+    public ParseVehicle parserVehicle;
+
+    @Autowired
+    public ParseDriver parserDriver;
 
     @GetMapping
     public List<TripDTO> getAllTrips() {
@@ -44,8 +52,8 @@ public class TripController {
         ResponseEntity<TripDTO> responseEntity;
         if (trip != null) {
             trip.setDate(tripDetail.getDate());
-            trip.setDrivers(tripDetail.getDrivers().stream().map(driver -> parser.unparse(driver)).collect(Collectors.toList()));
-            trip.setVehicles(tripDetail.getVehicles().stream().map(vehicle -> parser.unparse(vehicle)).collect(Collectors.toList()));
+            trip.setDrivers(tripDetail.getDrivers().stream().map(driver -> parserDriver.unparse(driver)).collect(Collectors.toList()));
+            trip.setVehicles(tripDetail.getVehicles().stream().map(vehicle -> parserVehicle.unparse(vehicle)).collect(Collectors.toList()));
             responseEntity = ResponseEntity.ok().body(parser.parse(tripRepository.save(trip)));
         } else {
             responseEntity = ResponseEntity.noContent().build();
